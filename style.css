@@ -1,0 +1,43 @@
+*{
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 1280px;
+    
+}
+
+img{
+   width: 10rem;
+    height: 10rem;
+    border-radius: 10px;
+}
+
+button{
+    width: 30%;
+    height: 2rem;
+    border-radius: 20px;
+    border-color: white;
+    background-color: rgba(121, 9, 121, 0.775);
+    box-shadow: 1px 1px 5px white;
+    color: whitesmoke;
+    text-shadow: 1px 1px 1px rgba(244, 242, 242, 0.227);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+div{
+    text-align: center;
+    font-size: 1.6rem;
+    padding: 0.5rem;
+}
+
+#texte2{
+    margin-top: 5rem;
+}
+
+h1{
+    text-align: center;
+    font-size: 3rem;
+    color: rgb(121, 9, 121);
+    text-shadow: 1px 1px 6px rgba(121, 9, 121, 0.444);
+}
