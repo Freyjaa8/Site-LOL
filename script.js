@@ -56,4 +56,36 @@ function total ()
 }
 const boutonT = document.getElementById( "total" );
 
-boutonT.addEventListener( 'click',total);
+boutonT.addEventListener( 'click', total );
+
+// Bouton de reset
+
+
+let date = new Date();
+let jour = date.getDay();
+let incr = 0;
+
+
+document.getElementById( "reset" ).addEventListener( 'click', function (event)
+{
+    
+    event.preventDefault();
+    let jourJ = new Date().getDay();
+    if ( jour == jourJ ){
+    if ( incr > 2)
+    {
+    alert( "Plus de Jocker pour le moment LOL, joues ta merde, bisous." );
+    } else 
+    {
+        total();
+        incr++;
+        let tentatives = 3 - incr;
+        alert( "il te reste " + tentatives + " Jocker");
+    }
+    } else
+    {
+        incr = 0;
+        jour = jourJ;
+    } 
+});
+

@@ -43,9 +43,10 @@ button{
     text-shadow: 10px 10px 50px rgba(0, 0, 0, 0.354);
     font-size: 1.2rem;
     box-shadow: 5px 5px 30px #13e8e5a2;
-    margin: 0 1rem;
+    margin: 1rem 1rem;
     border: none;
     cursor: pointer;
+   
 }
 
 button:hover{
