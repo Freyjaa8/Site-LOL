@@ -48,7 +48,7 @@ function wow ()
 const boutonR = document.getElementById( "role" );
 boutonR.addEventListener( 'click', roles );
 
-function total ()
+async function total ()
 {
     utilisateurs();
     roles();
@@ -66,7 +66,7 @@ let jour = date.getDay();
 let incr = 0;
 
 
-document.getElementById( "reset" ).addEventListener( 'click', function (event)
+document.getElementById( "reset" ).addEventListener( 'click', async function (event)
 {
     
     event.preventDefault();
@@ -77,10 +77,22 @@ document.getElementById( "reset" ).addEventListener( 'click', function (event)
     alert( "Plus de Jocker pour le moment LOL, joues ta merde, bisous." );
     } else 
     {
-        total();
-        incr++;
-        let tentatives = 3 - incr;
-        alert( "il te reste " + tentatives + " Jocker");
+        if ( incr == 0 )
+        {
+            let tentatives = 2
+            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
+            {
+                await total();
+                incr++;
+            }
+        } else {
+            let tentatives = 2 - incr;
+            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
+            {
+                await total();
+                incr++;
+            }
+        }
     }
     } else
     {
