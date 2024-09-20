@@ -22,9 +22,16 @@ h1{
     color: #A7E0E0;
     font-weight: 400;
     box-shadow: 1px 1px 30px #13e8e5a2, -1px -1px 30px #13e8e5a2;
-    max-width: 50%;
+    max-width: 80%;
     margin: 5rem auto;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.user{
+   width: 50%;
 }
 
 img{
@@ -48,7 +55,6 @@ button{
     margin: 1rem 1rem;
     border: none;
     cursor: pointer;
-   
 }
 
 button:hover{
@@ -63,28 +69,21 @@ div{
     padding: 0.5rem;
 }
 .gone{
-    animation: go 20s forwards;
+    display: none;
 }
 
-@keyframes go{
-    0% {
-        transform: scale(5);
-    }
-
-    50%{
-        transform: translateY(-100rem);
-    }
-
-    100%{
-        transform: translateY(-100rem);
-        visibility: hidden;
-    }
+.btnvisible{
+    display: inline-block;
+    width: 50%;
+    
 }
 
-#jocker{
+
+.jocker{
     color : #A7E0E0;
     text-shadow: 6px 6px 50px #13e8e5a2 ;
     margin-top: 1rem;
+    font-size: 0.8em;
     
 }
 
@@ -92,6 +91,7 @@ div{
     width: 100%;
     margin: 0 0;
 }
-#texte2{
-    background-color: transparent;
+
+.erase {
+    display: none;
 }

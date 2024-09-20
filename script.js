@@ -1,6 +1,7 @@
 var user1 = prompt('Le premier joueur est...');
 var user2 = prompt( 'Et le deuxième ?' );
 
+// fonctions champions 
 
 async function utilisateurs ()
 {
@@ -14,9 +15,9 @@ async function utilisateurs ()
         const randomUser2 = data[ 0 ][ randomIndex2 ];
         if(randomUser !== randomUser2){
         document.getElementById( "texte1" ).innerHTML = `Tu joueras : ${ randomUser.name } <div><img src="${ randomUser.icon }"><div>`;
-            document.getElementById( "texte4" ).innerHTML = `Tu joueras : ${ randomUser2.name } <div><img src="${ randomUser2.icon }"><div>`;
-            document.getElementById( "user1" ).innerHTML = "Joueur : " + user1;
-            document.getElementById("user2").innerHTML =  "Joueur : " + user2;
+        document.getElementById( "texte4" ).innerHTML = `Tu joueras : ${ randomUser2.name } <div><img src="${ randomUser2.icon }"><div>`;
+        document.getElementById( "user1" ).innerHTML = "Joueur : " + user1;
+        document.getElementById("user2").innerHTML =  "Joueur : " + user2;
         document.getElementById( "destiny" ).classList.add( "destiny" );
         }
     }
@@ -63,9 +64,11 @@ const boutonR = document.getElementById( "role" );
 boutonR.addEventListener( 'click', roles );
 
 async function total ()
-{
+{   
     let test = document.getElementById( "use1" );
     let test2 = document.getElementById( "use2" );
+    let btn = document.getElementById( "reset" );
+    let btn2 = document.getElementById( "resete" );
     test.animate(
         [
             { transform: "scale(0)" },
@@ -83,14 +86,53 @@ async function total ()
     {
         duration: 2000
     },
-);
+    );
     utilisateurs();
     roles();
     wow();
+    btn.classList.add( "btnvisible" );
+    btn2.classList.add( "btnvisible" );
+    btn.innerHTML = `Jocker pour ${ user1 }`
+    btn2.innerHTML = `Jocker pour ${ user2 }`
+    if ( incr > 2 )
+    {
+    btn.classList.remove( "btnvisible" );
+    } else if ( incr2 > 2 )
+    {
+        btn2.classList.remove( "btnvisible" );
+        
+    }
+}
+var nbr = 5;
+var temps;
+var texte = document.getElementById( "texte" );
+
+function affiche ()
+{
+    texte.textContent = 4;
+    if (nbr > 0){
+        nbr--;
+        texte.textContent = nbr;
+    temps = setTimeout( affiche, 1000, nbr )
+    };
+    if ( nbr == 0 )
+    {
+        total();
+        document.getElementById( "use1" ).style.display = "block";
+        document.getElementById( "use2" ).style.display = "block";
+        texte.textContent = "";
+        nbr = 4;
+        clearTimeout( temps );
+    }
 }
 const boutonT = document.getElementById( "total" );
 
-boutonT.addEventListener( 'click', total );
+boutonT.addEventListener( 'click', function ()
+{
+    document.getElementById( "use1" ).style.display = "none";
+    document.getElementById( "use2" ).style.display = "none"
+    affiche();
+});
 
 // Bouton de reset , texte Jocker
 
@@ -99,11 +141,42 @@ let date = new Date();
 let jour = date.getDay();
 let incr = 0;
 
-document.getElementById( "jocker" ).innerHTML="Il te reste 3 Jocker";
+let date2 = new Date();
+let jour2 = date.getDay();
+let incr2 = 0;
 
-document.getElementById( "reset" ).addEventListener( 'click', async function (event)
+async function byuser ()
 {
+    const fichiers = await fetch( 'champions.json' );
+    const data = await fichiers.json();
+    const randomchamp = Math.floor( Math.random() * data[ 0 ].length );
+    const randomUser = data[ 0 ][ randomchamp ];
+
+    const randomrole = Math.floor( Math.random() * data[1].length );
+    const randomUser2 = data[ 1 ][ randomrole ];
     
+        document.getElementById( "texte1" ).innerHTML = `Tu joueras : ${ randomUser.name } <div><img src="${ randomUser.icon }"><div>`;
+        document.getElementById( "user1" ).innerHTML = "Joueur : " + user1;
+        document.getElementById( "texte2" ).innerHTML = `Ton role : ${ randomUser2.Role }`;
+        document.getElementById( "destiny" ).classList.add( "destiny" );
+}
+async function byuser2 ()
+{
+    const fichiers = await fetch( 'champions.json' );
+    const data = await fichiers.json();
+    const randomchamp = Math.floor( Math.random() * data[ 0 ].length );
+    const randomUser = data[ 0 ][ randomchamp ];
+
+    const randomrole = Math.floor( Math.random() * data[1].length );
+    const randomUser2 = data[ 1 ][ randomrole ];
+    
+        document.getElementById( "texte4" ).innerHTML = `Tu joueras : ${ randomUser.name } <div><img src="${ randomUser.icon }"><div>`;
+        document.getElementById( "user2" ).innerHTML = "Joueur : " + user1;
+        document.getElementById( "texte3" ).innerHTML = `Ton role : ${ randomUser2.Role }`;
+        document.getElementById( "destiny" ).classList.add( "destiny" );
+}
+async function jockerbtn (event)
+{
     event.preventDefault();
     let jourJ = new Date().getDay();
     if ( jour == jourJ ){
@@ -111,9 +184,9 @@ document.getElementById( "reset" ).addEventListener( 'click', async function (ev
     {
         alert( "Plus de Jocker pour le moment LOL, joues ta merde, bisous." );
         let btn = document.getElementById( "reset" );
-        btn.classList.add( "gone" );
+        btn.classList.remove( "btnvisible" );
         btn.innerHTML = "Y'a plus de Jockeeeeer BYYYYYYYYYYYYE"
-        document.getElementById( "jocker" ).innerHTML = `Bah oui t'as tout bouffé le bouton est parti, raclure.`;
+        document.getElementById( "jocker1" ).innerHTML = `Bah oui ${user1} t'as tout bouffé le bouton est parti, raclure.`;
     } else 
     {
         if ( incr == 0 )
@@ -122,17 +195,17 @@ document.getElementById( "reset" ).addEventListener( 'click', async function (ev
             
             if ( confirm( "il te restera " + tentatives + " Jocker" ) )
             {
-                await total();
+                await byuser();
                 incr++;
-                document.getElementById( "jocker" ).innerHTML = `Attention plus que ${ tentatives } jocker :3`;
+                document.getElementById( "jocker1" ).innerHTML = `Attention ${user1} plus que ${ tentatives } jocker :3`;
             }
         } else {
             let tentatives = 2 - incr;
             if ( confirm( "il te restera " + tentatives + " Jocker" ) )
             {
-                await total();
+                byuser();
                 incr++;
-                document.getElementById( "jocker" ).innerHTML = `Attention plus que ${ tentatives } jocker :3`;
+                document.getElementById( "jocker1" ).innerHTML = `Attention ${user1} plus que ${ tentatives } jocker :3`;
             }
         }
     }
@@ -141,5 +214,47 @@ document.getElementById( "reset" ).addEventListener( 'click', async function (ev
         incr = 0;
         jour = jourJ;
     } 
-});
+};
 
+async function jockerbtn2 (event)
+{
+    event.preventDefault();
+    let jourJJ = new Date().getDay();
+    if ( jour2 == jourJJ ){
+    if ( incr2 > 2)
+    {
+        alert( "Plus de Jocker pour le moment LOL, joues ta merde, bisous." );
+        let btn2 = document.getElementById( "resete" );
+        btn2.classList.remove( "btnvisible" );
+        btn2.innerHTML = "Y'a plus de Jockeeeeer BYYYYYYYYYYYYE"
+        document.getElementById( "jocker2" ).innerHTML = `Bah oui ${user2}, t'as tout bouffé le bouton est parti, raclure.`;
+    } else 
+    {
+        if ( incr2 == 0 )
+        {
+            let tentatives = 2
+            
+            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
+            {
+                await byuser2();
+                incr2++;
+                document.getElementById( "jocker2" ).innerHTML = `Attention ${user2}, plus que ${ tentatives } jocker :3`;
+            }
+        } else {
+            let tentatives = 2 - incr2;
+            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
+            {
+                byuser2();
+                incr2++;
+                document.getElementById( "jocker2" ).innerHTML = `Attention ${user2}, plus que ${ tentatives } jocker :3`;
+            }
+        }
+    }
+    } else
+    {
+        incr2 = 0;
+        jour2 = jourJJ;
+    } 
+};
+document.getElementById( "reset" ).addEventListener( 'click', jockerbtn );
+document.getElementById( "resete" ).addEventListener( 'click', jockerbtn2 );
