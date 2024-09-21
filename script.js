@@ -1,260 +1,244 @@
-var user1 = prompt('Le premier joueur est...');
-var user2 = prompt( 'Et le deuxième ?' );
+// *******************Récupérer les utilisateurs*************************
+let user1 = prompt( 'Le premier joueur est...' );
+let user2 = prompt( 'Et le deuxième ?' );
 
-// fonctions champions 
+// *******************Init le càr****************************************
+let nbr = 5; //  Init Pour le compte à rebours d'apparition des roles/champ
+let temps; // Variable contenant le ClearTimeOut pour le càr
+let texte = document.getElementById( "rebours" ); // Là où s'affiche le càr
 
-async function utilisateurs ()
+// *******************Mettre en place la date pour le Jocker*************
+let date = new Date();
+let jour = date.getDay(); //Récupérer le numéro du jour actuel.
+let incr = 0;
+let incr2 = 0;
+
+const utilisateur = [ {
+    utilisateur: '',
+    champion: '',
+    image : '',
+    role: '',
+    incr: 0
+},  {
+    utilisateur: '',
+    champion: '',
+    role: '',
+    image :'',
+    incr: 0
+}
+];
+
+utilisateur[ 0 ].utilisateur = user1; 
+utilisateur[ 1 ].utilisateur = user2; 
+
+//*********************Choper les boutons *******************************/
+let totalr = id( 'btn' );
+let champr = id( 'btn2' );
+let roler = id( '' );
+let jocker1 = id( '' );
+let jocker2 = id( '' );
+//********************Fonction pour définir le random *******************/
+
+function randomiseur ( donnees, index )
 {
-    try
-    {
-        const fichiers = await fetch( 'champions.json' );
-        const data = await fichiers.json();
-        const randomIndex = Math.floor( Math.random() * data[ 0 ].length );
-        const randomUser = data[ 0 ][ randomIndex ];
-        const randomIndex2 = Math.floor( Math.random() * data[ 0 ].length );
-        const randomUser2 = data[ 0 ][ randomIndex2 ];
-        if(randomUser !== randomUser2){
-        document.getElementById( "texte1" ).innerHTML = `Tu joueras : ${ randomUser.name } <div><img src="${ randomUser.icon }"><div>`;
-        document.getElementById( "texte4" ).innerHTML = `Tu joueras : ${ randomUser2.name } <div><img src="${ randomUser2.icon }"><div>`;
-        document.getElementById( "user1" ).innerHTML = "Joueur : " + user1;
-        document.getElementById("user2").innerHTML =  "Joueur : " + user2;
-        document.getElementById( "destiny" ).classList.add( "destiny" );
-        }
-    }
-    catch ( error )
-    {
-    }
-} 
-
-const bouton = document.getElementById( "personnage" );
-bouton.addEventListener( 'click', utilisateurs );
-
-
-async function roles ()
-{
-    try
-    {
-        const fichiers = await fetch( 'champions.json' );
-        const data = await fichiers.json();
-        const randomIndex = Math.floor( Math.random() * data[1].length );
-        const randomUser = data[ 1 ][ randomIndex ];
-        const randomIndex2 = Math.floor( Math.random() * data[1].length );
-        const randomUser2 = data[1][ randomIndex2 ];
-        if(randomUser !== randomUser2){
-        document.getElementById( "texte2" ).innerHTML = `Ton role : ${ randomUser.Role }`;
-        document.getElementById( "texte3" ).innerHTML = `Ton role : ${ randomUser2.Role }`;
-        document.getElementById( "destiny" ).classList.add( "destiny" );
-        }
-    }
-    catch ( error )
-    {
-        alert( 'Bébou, ca ne fonctionne pas, oups', error );
-    }
+    const randomIndex = Math.floor( Math.random() * donnees[ index ].length );
+    const randomUser = donnees[ index ][ randomIndex ];
+    return randomUser;
 }
 
+//**********************Fonction pour chopper élement by ID et add une classe destiny*******************/
 
-
-function wow ()
+function id ( id)
 {
-    let phrases = [ "Bonne Chance avec ce pick Bébou <3", "Ptdrrr c'est de la merde", "Bébouuuu Bisouuuus <3", "Vasy on va encore perdre", "Bébou t'es le meilleur <3", "Je sais pas si on va casser des culs avec ça..." ]
-    let random = phrases[ Math.floor( Math.random() * phrases.length ) ] ;
-    document.querySelector( "h1" ).innerHTML = `<h2>${ random }</h2>`;
+    let element = document.getElementById( id );
+    return element;
 }
-const boutonR = document.getElementById( "role" );
-boutonR.addEventListener( 'click', roles );
 
-async function total ()
-{   
-    let test = document.getElementById( "use1" );
-    let test2 = document.getElementById( "use2" );
-    let btn = document.getElementById( "reset" );
-    let btn2 = document.getElementById( "resete" );
-    test.animate(
-        [
-            { transform: "scale(0)" },
-            { transform: "scale(1)" },
-        ],
-        {
-            duration: 2000
-        },
-    );
+function addclass ( idhtml, id )
+{
+    document.getElementById( idhtml ).classList.add( id );
+}
 
-    test2.animate([
-        { transform: "scale(0)" },
-        { transform: "scale(1)" },
-    ],
+//*********************Fonction Role et Champion random ******************/
+async function champion (numeroUser)
+{
+    
+    const fichiers = await fetch( 'champions.json' );
+    const data = await fichiers.json();
+    const champion = randomiseur( data, 0 );
+    utilisateur[ numeroUser ].champion = champion.name;
+    utilisateur[ numeroUser ].image = champion.icon;
+}
+
+async function role (numeroUser)
+{
+    const fichiers = await fetch( 'champions.json' );
+    const data = await fichiers.json();
+    const role = randomiseur( data, 1 );
+    utilisateur[ numeroUser ].role = role.Role;
+}
+
+// ********************Fonction random Total bébou************************/
+
+function randomTotal ()
+{
+        champion(0);
+        champion(1);
+        role(0);
+        role( 1 );
+    if ( ( utilisateur[ 0 ].champion == utilisateur[ 1 ].champion ) || ( utilisateur[ 0 ].role == utilisateur[ 1 ].role ) )
     {
-        duration: 2000
-    },
-    );
-    utilisateurs();
-    roles();
-    wow();
-    btn.classList.add( "btnvisible" );
-    btn2.classList.add( "btnvisible" );
-    btn.innerHTML = `Jocker pour ${ user1 }`
-    btn2.innerHTML = `Jocker pour ${ user2 }`
-    if ( incr > 2 )
-    {
-    btn.classList.remove( "btnvisible" );
-    } else if ( incr2 > 2 )
-    {
-        btn2.classList.remove( "btnvisible" );
+        randomTotal; /// PB CA MARCHE PAS IL FAUT RECLIQUAX
+        console.log('sac à merde');
+    }
+    else
+    {affichageperso( 'texte1', 0 );
+        affichageperso( 'texte4', 1 );
+        affichagerole( 'texte2',0 );
+        affichagerole( 'texte3', 1 );
+        addclass( 'reset', 'btnvisible' );
+        addclass( 'resete', 'btnvisible' );
+        id('reset').innerHTML = `Jocker pour ${ user1 }`;
+        id('resete').innerHTML = `Jocker pour ${ user2 }`;
+        
         
     }
+    if ( incr > 2 )
+    {
+        id( 'reset' ).classList.remove( 'btnvisible' );
+        id( 'resete' ).classList.remove( 'btnvisible' );
+    }
 }
-var nbr = 5;
-var temps;
-var texte = document.getElementById( "texte" );
+//************************Fonction affichage de la merde d'enculé de texte pour le random******** */
 
-function affiche ()
+function affichageperso (div, numeroUser){
+    id(div).innerHTML = `Tu joueras : ${utilisateur[numeroUser].champion} <div><img src="${utilisateur[numeroUser].image}"><div>`;
+    addclass( 'destiny', 'destiny' );
+}
+function affichagerole ( div, numeroUser )
+{
+    id(div).innerHTML = `Ton role : ${ utilisateur[numeroUser].role}`;
+    addclass( 'destiny', 'destiny' );
+}
+
+//***************************Fonction compte à rebours***********************/
+
+function rebours ()
 {
     texte.textContent = 4;
     if (nbr > 0){
         nbr--;
         texte.textContent = nbr;
-    temps = setTimeout( affiche, 1000, nbr )
+        temps = setTimeout( affiche, 1000, nbr )
     };
     if ( nbr == 0 )
     {
-        total();
-        document.getElementById( "use1" ).style.display = "block";
-        document.getElementById( "use2" ).style.display = "block";
+        randomTotal();
+        id('use1').style.display = "block";
+        id('use2').style.display = "block";
         texte.textContent = "";
         nbr = 4;
         clearTimeout( temps );
     }
 }
-const boutonT = document.getElementById( "total" );
 
-boutonT.addEventListener( 'click', function ()
-{
-    document.getElementById( "use1" ).style.display = "none";
-    document.getElementById( "use2" ).style.display = "none"
-    affiche();
-});
+//***************************Fonction pour Jocker Bouton ! ********************/
 
-// Bouton de reset , texte Jocker
-
-
-let date = new Date();
-let jour = date.getDay();
-let incr = 0;
-
-let date2 = new Date();
-let jour2 = date.getDay();
-let incr2 = 0;
-
-async function byuser ()
-{
-    const fichiers = await fetch( 'champions.json' );
-    const data = await fichiers.json();
-    const randomchamp = Math.floor( Math.random() * data[ 0 ].length );
-    const randomUser = data[ 0 ][ randomchamp ];
-
-    const randomrole = Math.floor( Math.random() * data[1].length );
-    const randomUser2 = data[ 1 ][ randomrole ];
-    
-        document.getElementById( "texte1" ).innerHTML = `Tu joueras : ${ randomUser.name } <div><img src="${ randomUser.icon }"><div>`;
-        document.getElementById( "user1" ).innerHTML = "Joueur : " + user1;
-        document.getElementById( "texte2" ).innerHTML = `Ton role : ${ randomUser2.Role }`;
-        document.getElementById( "destiny" ).classList.add( "destiny" );
-}
-async function byuser2 ()
-{
-    const fichiers = await fetch( 'champions.json' );
-    const data = await fichiers.json();
-    const randomchamp = Math.floor( Math.random() * data[ 0 ].length );
-    const randomUser = data[ 0 ][ randomchamp ];
-
-    const randomrole = Math.floor( Math.random() * data[1].length );
-    const randomUser2 = data[ 1 ][ randomrole ];
-    
-        document.getElementById( "texte4" ).innerHTML = `Tu joueras : ${ randomUser.name } <div><img src="${ randomUser.icon }"><div>`;
-        document.getElementById( "user2" ).innerHTML = "Joueur : " + user1;
-        document.getElementById( "texte3" ).innerHTML = `Ton role : ${ randomUser2.Role }`;
-        document.getElementById( "destiny" ).classList.add( "destiny" );
-}
-async function jockerbtn (event)
+async function jocker (event, idbtn, iddiv, user, texte1, texte2, numeroUser)
 {
     event.preventDefault();
     let jourJ = new Date().getDay();
-    if ( jour == jourJ ){
-    if ( incr > 2)
+    if ( jour == jourJ )
     {
-        alert( "Plus de Jocker pour le moment LOL, joues ta merde, bisous." );
-        let btn = document.getElementById( "reset" );
-        btn.classList.remove( "btnvisible" );
-        btn.innerHTML = "Y'a plus de Jockeeeeer BYYYYYYYYYYYYE"
-        document.getElementById( "jocker1" ).innerHTML = `Bah oui ${user1} t'as tout bouffé le bouton est parti, raclure.`;
-    } else 
-    {
-        if ( incr == 0 )
+        if ( utilisateur[numeroUser].incr > 2 )
         {
-            let tentatives = 2
-            
-            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
+            alert( 'Plus de Jocker pour le moment LOL, joues ta merde, bisous.' );
+            let btn = id( idbtn );
+            btn.classList.remove( 'btnvisible' );
+            id( iddiv).innerHTML = `Bah oui ${user} t'as tout bouffé le bouton est parti, raclure.`;
+        } else
+        {
+            if ( utilisateur[numeroUser].incr == 0 )
             {
-                await byuser();
-                incr++;
-                document.getElementById( "jocker1" ).innerHTML = `Attention ${user1} plus que ${ tentatives } jocker :3`;
-            }
-        } else {
-            let tentatives = 2 - incr;
-            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
+                let tentatives = 2;
+                if ( confirm( `Il te restera ${ tentatives } jockers.` ) )
+                {
+                    champion( numeroUser );
+                    role( numeroUser );
+                    if (( utilisateur[ 0 ].champion != utilisateur[ 1 ].champion ) && ( utilisateur[ 0 ].role != utilisateur[ 1 ].role )){
+                        affichageperso( texte1, numeroUser );
+                        affichagerole( texte2, numeroUser );
+                        utilisateur[ numeroUser ].incr++;
+                        id( iddiv ).innerHTML = `Attention ${ user } plus que ${ tentatives } jocker <3`;
+                    } else
+                    {
+                        jocker(event, idbtn, iddiv, user, texte1, texte2, numeroUser);
+                    }
+                }
+            } else
             {
-                byuser();
-                incr++;
-                document.getElementById( "jocker1" ).innerHTML = `Attention ${user1} plus que ${ tentatives } jocker :3`;
+                let tentatives = 2 - utilisateur[numeroUser].incr;
+                if ( confirm( `Il te restera ${ tentatives } jockers.` ) )
+                {
+                    champion( numeroUser );
+                    role( numeroUser );
+                    if (( utilisateur[ 0 ].champion != utilisateur[ 1 ].champion ) && ( utilisateur[ 0 ].role != utilisateur[ 1 ].role )){
+                        affichageperso( texte1, numeroUser );
+                        affichagerole( texte2, numeroUser );
+                        utilisateur[ numeroUser ].incr++;
+                        id( iddiv ).innerHTML = `Attention ${ user } plus que ${ tentatives } jocker <3`;
+                    } else
+                    {
+                        jocker(event, idbtn, iddiv, user, texte1, texte2, numeroUser);
+                    }
+                    
+                }
             }
         }
-    }
     } else
     {
-        incr = 0;
+        utilisateur[numeroUser].incr = 0;
         jour = jourJ;
-    } 
-};
-
-async function jockerbtn2 (event)
-{
-    event.preventDefault();
-    let jourJJ = new Date().getDay();
-    if ( jour2 == jourJJ ){
-    if ( incr2 > 2)
-    {
-        alert( "Plus de Jocker pour le moment LOL, joues ta merde, bisous." );
-        let btn2 = document.getElementById( "resete" );
-        btn2.classList.remove( "btnvisible" );
-        btn2.innerHTML = "Y'a plus de Jockeeeeer BYYYYYYYYYYYYE"
-        document.getElementById( "jocker2" ).innerHTML = `Bah oui ${user2}, t'as tout bouffé le bouton est parti, raclure.`;
-    } else 
-    {
-        if ( incr2 == 0 )
-        {
-            let tentatives = 2
-            
-            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
-            {
-                await byuser2();
-                incr2++;
-                document.getElementById( "jocker2" ).innerHTML = `Attention ${user2}, plus que ${ tentatives } jocker :3`;
-            }
-        } else {
-            let tentatives = 2 - incr2;
-            if ( confirm( "il te restera " + tentatives + " Jocker" ) )
-            {
-                byuser2();
-                incr2++;
-                document.getElementById( "jocker2" ).innerHTML = `Attention ${user2}, plus que ${ tentatives } jocker :3`;
-            }
-        }
     }
+}
+//**********************Event sur les boutons ********************************************/
+
+id( 'role' ).addEventListener( 'click', function juju ()
+{
+    role(0);
+    role( 1 );
+    if (utilisateur[0].role != utilisateur[1].role)
+    {
+        affichagerole( 'texte2',0 );
+        affichagerole( 'texte3',1 );
     } else
     {
-        incr2 = 0;
-        jour2 = jourJJ;
-    } 
-};
-document.getElementById( "reset" ).addEventListener( 'click', jockerbtn );
-document.getElementById( "resete" ).addEventListener( 'click', jockerbtn2 );
+        juju;
+    }
+} )
+
+id( 'personnage' ).addEventListener( 'click', function juju ()
+{
+    champion(0);
+    champion( 1 );
+    if ( utilisateur[ 0 ].champion != utilisateur[ 1 ].champion )
+    {
+        affichageperso( 'texte1', 0 );
+        affichageperso( 'texte4', 1 );
+    } else
+    {
+        juju;
+    }
+} )
+
+id( 'total' ).addEventListener( 'click', function(){
+    randomTotal();
+} )
+
+id( 'reset' ).addEventListener( 'click', function(event){
+    jocker( event, 'reset', 'jocker1', user1, 'texte2', 'texte1',0 );
+} )
+
+id( 'resete' ).addEventListener( 'click', function (event){
+    jocker( event , 'resete', 'jocker2', user2, 'texte3', 'texte4',1 );
+})
